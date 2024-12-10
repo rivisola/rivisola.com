@@ -1,0 +1,17 @@
+body {
+    background: #ffdddd;
+    color: #440066;
+}
+
+img {
+    float: right;
+    width: 50%;
+}
+
+h1 {
+    font-family: 'Satisfy', cursive;
+}
+
+p {
+    font-family: 'Merienda', cursive;
+}
