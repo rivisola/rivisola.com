@@ -540,7 +540,7 @@
                 data: {
                     labels: rolesLabels.map(role => role.label),
                     datasets: [{
-                        label: 'Members',
+                        label: 'Total Levels',
                         data: rolesLabels.map(role => data.map(d => d.levels.slice(role.startIndex, role.endIndex).reduce((a, b) => a + b)).reduce((a, b) => a + b)),
                         borderWidth: 0,
                         backgroundColor: rolesLabels.map(role => role.color),
@@ -604,7 +604,7 @@
                 data: {
                     labels: jobLabels.map(x => x.label),
                     datasets: [{
-                        label: 'Members',
+                        label: 'Total Levels',
                         data: jobLabels.map(job => data.map(d => d.levels[job.index]).reduce((a, b) => a + b)),
                         borderWidth: 0,
                         backgroundColor: jobLabels.map(job => job.color),
