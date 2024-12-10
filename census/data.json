@@ -1,0 +1,402 @@
+[
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Lalafell",
+    "clan": "Dunesfolk",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Keeper of the Moon",
+    "gender": "♀",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Elezen",
+    "clan": "Wildwood",
+    "gender": "♀",
+    "guardian": "Byregot, the Builder",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Xaela",
+    "gender": "♀",
+    "guardian": "Nald'thal, the Traders",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Roegadyn",
+    "clan": "Sea Wolf",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Gridania",
+    "grandCompany": "No Affiliation"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Keeper of the Moon",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Gridania",
+    "grandCompany": "No Affiliation"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Azeyma, the Warden",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Highlander",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♂",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Elezen",
+    "clan": "Duskwight",
+    "gender": "♀",
+    "guardian": "Thaliak, the Scholar",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Viera",
+    "clan": "Rava",
+    "gender": "♀",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Elezen",
+    "clan": "Wildwood",
+    "gender": "♂",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Gridania",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♂",
+    "guardian": "Halone, the Fury",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Gridania",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♂",
+    "guardian": "Azeyma, the Warden",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Nald'thal, the Traders",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Byregot, the Builder",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Viera",
+    "clan": "Veena",
+    "gender": "♀",
+    "guardian": "Nophica, the Matron",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♂",
+    "guardian": "Oschon, the Wanderer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Viera",
+    "clan": "Veena",
+    "gender": "♀",
+    "guardian": "Llymlaen, the Navigator",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Hrothgar",
+    "clan": "The Lost",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♂",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Xaela",
+    "gender": "♂",
+    "guardian": "Nald'thal, the Traders",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Lalafell",
+    "clan": "Plainsfolk",
+    "gender": "♀",
+    "guardian": "Nophica, the Matron",
+    "startingCity": "Gridania",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Keeper of the Moon",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Hrothgar",
+    "clan": "The Lost",
+    "gender": "♀",
+    "guardian": "Thaliak, the Scholar",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Thaliak, the Scholar",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Lalafell",
+    "clan": "Plainsfolk",
+    "gender": "♂",
+    "guardian": "Nophica, the Matron",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Nophica, the Matron",
+    "startingCity": "Gridania",
+    "grandCompany": "No Affiliation"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Midlander",
+    "gender": "♂",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♀",
+    "guardian": "Thaliak, the Scholar",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Viera",
+    "clan": "Veena",
+    "gender": "♂",
+    "guardian": "Llymlaen, the Navigator",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Xaela",
+    "gender": "♂",
+    "guardian": "Rhalgr, the Destroyer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Raen",
+    "gender": "♂",
+    "guardian": "Oschon, the Wanderer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Xaela",
+    "gender": "♀",
+    "guardian": "Oschon, the Wanderer",
+    "startingCity": "Gridania",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Keeper of the Moon",
+    "gender": "♀",
+    "guardian": "Althyk, the Keeper",
+    "startingCity": "Gridania",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Viera",
+    "clan": "Veena",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Au Ra",
+    "clan": "Xaela",
+    "gender": "♂",
+    "guardian": "Oschon, the Wanderer",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Immortal Flames"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Keeper of the Moon",
+    "gender": "♀",
+    "guardian": "Nymeia, the Spinner",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Viera",
+    "clan": "Rava",
+    "gender": "♀",
+    "guardian": "Azeyma, the Warden",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Miqo'te",
+    "clan": "Seeker of the Sun",
+    "gender": "♀",
+    "guardian": "Halone, the Fury",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  },
+  {
+    "race": "Hyur",
+    "clan": "Highlander",
+    "gender": "♂",
+    "guardian": "Nald'thal, the Traders",
+    "startingCity": "Limsa Lominsa",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Elezen",
+    "clan": "Wildwood",
+    "gender": "♀",
+    "guardian": "Althyk, the Keeper",
+    "startingCity": "Ul'dah",
+    "grandCompany": "Maelstrom"
+  },
+  {
+    "race": "Viera",
+    "clan": "Rava",
+    "gender": "♀",
+    "guardian": "Menphina, the Lover",
+    "startingCity": "Gridania",
+    "grandCompany": "Order of the Twin Adder"
+  }
+]
