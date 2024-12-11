@@ -213,6 +213,58 @@ function filterData(selectedFilter: {
 		});
 }
 
+// :{race:string,clan:string,gender:string,guardian:string,startingCity:string,grandCompany:string,levels:number[]}
+function getMostPopularRace(
+	additionalFilter: ({
+		race,
+		clan,
+		gender,
+		guardian,
+		startingCity,
+		grandCompany,
+		levels,
+	}: {
+		race: string;
+		clan: string;
+		gender: string;
+		guardian: string;
+		startingCity: string;
+		grandCompany: string;
+		levels: number[];
+	}) => boolean = () => true,
+) {
+	const raceStats = races.map(({ label }) => ({
+		race: label,
+		count: allData.filter(({ race }) => race === label).filter(additionalFilter)
+			.length,
+	}));
+	const maxValue = Math.max.apply(
+		null,
+		raceStats.map(({ count }) => count),
+	);
+	const mostPopularRaces = raceStats
+		.filter(({ count }) => count === maxValue)
+		.map(({ race }) => race);
+	if (mostPopularRaces.length === 1) return mostPopularRaces[0];
+	return `a tie between ${mostPopularRaces.join(' & ')}`;
+}
+
+const mostPopularRace = getMostPopularRace();
+const mostPopularMaleRace = getMostPopularRace(({ gender }) => gender === '♂');
+const mostPopularFemaleRace = getMostPopularRace(
+	({ gender }) => gender === '♀',
+);
+const missingClans = clans
+	.filter(({ label }) => !allData.map(({ clan }) => clan).includes(label))
+	.map(({ label }) => label)
+	.join(' & ');
+const endangeredSpecies = races
+	.filter(
+		({ label }) => allData.filter(({ race }) => race === label).length === 1,
+	)
+	.map(({ label }) => label)
+	.join(' & ');
+
 function App() {
 	const [selectedFilter, setSelectedFilter] = useState({
 		gender: '',
@@ -589,8 +641,40 @@ function App() {
 					/>
 				</PieChart>
 			</div>
-			{/*<h2>Insights</h2>*/}
-			<p>Last updated December 10, 2024.</p>
+			<h2>Insights</h2>
+			<ul>
+				<li>
+					The most popular race across all members of the FC is{' '}
+					<b>{mostPopularRace}</b>.
+					<ul>
+						<li>
+							The most popular race among <b>male</b> characters is{' '}
+							<b>{mostPopularMaleRace}</b>.
+						</li>
+						<li>
+							The most popular race among <b>female</b> characters is{' '}
+							<b>{mostPopularFemaleRace}</b>.
+						</li>
+					</ul>
+				</li>
+				{missingClans && (
+					<li>
+						Missing! The FC currently has no representation from the{' '}
+						<b>{missingClans}</b>{' '}
+						{missingClans.includes('&') ? 'clans' : 'clan'}.
+					</li>
+				)}
+				{endangeredSpecies && (
+					<li>
+						Endangered species? The FC only has one{' '}
+						{endangeredSpecies.includes('&') ? 'each of the ' : ''}
+						<b>{endangeredSpecies}</b> remaining.
+					</li>
+				)}
+			</ul>
+			<aside>
+				<p>Last updated December 10, 2024.</p>
+			</aside>
 		</>
 	);
 }

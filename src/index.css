@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merienda&family=Satisfy&display=swap');
+
 body {
 	background: #ffdddd;
 	color: #440066;
@@ -5,10 +7,18 @@ body {
 
 h1 {
 	font-family: 'Satisfy', cursive;
+	font-size: 24pt;
 }
 
-p {
+h2 {
+	font-family: 'Satisfy', cursive;
+	font-size: 20pt;
+}
+
+p,
+li {
 	font-family: 'Merienda', cursive;
+	font-size: 18pt;
 }
 
 .charts {
@@ -34,4 +44,8 @@ p {
 		display: flex;
 		flex-direction: column;
 	}
+}
+
+aside p {
+	font-size: 12pt;
 }
