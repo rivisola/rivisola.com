@@ -155,13 +155,22 @@ function getLabel({
 	}
 	return (
 		<>
-			<text x={x} y={y} dy={-14} fill="#444" fontSize={20} textAnchor="middle">
+			<text
+				x={x}
+				y={y}
+				dy={-14}
+				fill="#444"
+				fontFamily="Arial, Helvetica, sans-serif"
+				fontSize={20}
+				textAnchor="middle"
+			>
 				{name}
 			</text>
 			<text
 				x={newX}
 				y={newY}
 				fill="white"
+				fontFamily="Arial, Helvetica, sans-serif"
 				fontSize={20}
 				textAnchor={x > cx ? 'start' : 'end'}
 				dominantBaseline="central"
@@ -169,6 +178,22 @@ function getLabel({
 				{`${(percent * 100).toFixed(0)}%`}
 			</text>
 		</>
+	);
+}
+
+function makeChartTitle(title: string) {
+	return (
+		<text
+			x="50%"
+			y="10"
+			fontFamily="Arial, Helvetica, sans-serif"
+			fontSize="20"
+			fill="black"
+			textAnchor="middle"
+			dominantBaseline="central"
+		>
+			{title}
+		</text>
 	);
 }
 
@@ -213,7 +238,6 @@ function filterData(selectedFilter: {
 		});
 }
 
-// :{race:string,clan:string,gender:string,guardian:string,startingCity:string,grandCompany:string,levels:number[]}
 function getMostPopularRace(
 	additionalFilter: ({
 		race,
@@ -238,20 +262,83 @@ function getMostPopularRace(
 		count: allData.filter(({ race }) => race === label).filter(additionalFilter)
 			.length,
 	}));
+	const totalCount = raceStats.map((x) => x.count).reduce((a, b) => a + b);
 	const maxValue = Math.max.apply(
 		null,
 		raceStats.map(({ count }) => count),
 	);
-	const mostPopularRaces = raceStats
-		.filter(({ count }) => count === maxValue)
-		.map(({ race }) => race);
-	if (mostPopularRaces.length === 1) return mostPopularRaces[0];
-	return `a tie between ${mostPopularRaces.join(' & ')}`;
+	const mostPopularRaces = raceStats.filter(({ count }) => count === maxValue);
+
+	function convertToReadableFormat(
+		race: { race: string; count: any },
+		total: number,
+	) {
+		return `${race.race} (${Math.round((race.count / total) * 100)}%)`;
+	}
+
+	if (mostPopularRaces.length === 1)
+		return convertToReadableFormat(mostPopularRaces[0], totalCount);
+
+	return `a tie between ${mostPopularRaces.map((race) => convertToReadableFormat(race, totalCount)).join(' & ')}`;
+}
+
+function getMostPopularGuardian(
+	additionalFilter: ({
+		race,
+		clan,
+		gender,
+		guardian,
+		startingCity,
+		grandCompany,
+		levels,
+	}: {
+		race: string;
+		clan: string;
+		gender: string;
+		guardian: string;
+		startingCity: string;
+		grandCompany: string;
+		levels: number[];
+	}) => boolean = () => true,
+) {
+	const guardianStats = guardians.map(({ label }) => ({
+		guardian: label,
+		count: allData
+			.filter(({ guardian }) => guardian === label)
+			.filter(additionalFilter).length,
+	}));
+	const totalCount = guardianStats.map((x) => x.count).reduce((a, b) => a + b);
+	const maxValue = Math.max.apply(
+		null,
+		guardianStats.map(({ count }) => count),
+	);
+	const mostPopularGuardians = guardianStats.filter(
+		({ count }) => count === maxValue,
+	);
+
+	function convertToReadableFormat(
+		guardian: { guardian: string; count: any },
+		total: number,
+	) {
+		return `${guardian.guardian} (${Math.round((guardian.count / total) * 100)}%)`;
+	}
+
+	if (mostPopularGuardians.length === 1)
+		return convertToReadableFormat(mostPopularGuardians[0], totalCount);
+
+	return `a tie between ${mostPopularGuardians.map((race) => convertToReadableFormat(race, totalCount)).join(' & ')}`;
 }
 
 const mostPopularRace = getMostPopularRace();
 const mostPopularMaleRace = getMostPopularRace(({ gender }) => gender === '♂');
 const mostPopularFemaleRace = getMostPopularRace(
+	({ gender }) => gender === '♀',
+);
+const mostPopularGuardian = getMostPopularGuardian();
+const mostPopularMaleGuardian = getMostPopularGuardian(
+	({ gender }) => gender === '♂',
+);
+const mostPopularFemaleGuardian = getMostPopularGuardian(
 	({ gender }) => gender === '♀',
 );
 const missingClans = clans
@@ -287,7 +374,8 @@ function App() {
 					<>Showing all results.</>
 				) : (
 					<>
-						{data.length} of {allData.length} match the current filter criteria.
+						{data.length} of {allData.length} members match the current filter
+						criteria.
 					</>
 				)}
 			</p>
@@ -496,7 +584,12 @@ function App() {
 			</div>
 			<h2>Charts</h2>
 			<div className="charts">
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Gender Distribution"
+				>
+					{makeChartTitle('Gender Distribution')}
 					<Pie
 						data={genders.map(({ label, code, color }) => ({
 							name: label,
@@ -511,9 +604,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Race Distribution"
+				>
+					{makeChartTitle('Race Distribution')}
 					<Pie
 						data={races.map(({ label, color }) => ({
 							name: label,
@@ -528,9 +627,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Clan Distribution"
+				>
+					{makeChartTitle('Clan Distribution')}
 					<Pie
 						data={clans.map(({ label, color }) => ({
 							name: label,
@@ -545,9 +650,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Guardian Distribution"
+				>
+					{makeChartTitle('Guardian Distribution')}
 					<Pie
 						data={guardians.map(({ label, short, color }) => ({
 							name: short,
@@ -562,9 +673,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Starting City Distribution"
+				>
+					{makeChartTitle('Starting City Distribution')}
 					<Pie
 						data={startingCities.map(({ label, color }) => ({
 							name: label,
@@ -580,9 +697,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Grand Company Distribution"
+				>
+					{makeChartTitle('Grand Company Distribution')}
 					<Pie
 						data={grandCompanies.map(({ label, color }) => ({
 							name: label,
@@ -598,9 +721,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Job and Class Level Aggregate by Role"
+				>
+					{makeChartTitle('Job/Class Level Aggregate by Role')}
 					<Pie
 						data={roles.map(({ label, startIndex, endIndex, color }) => ({
 							name: label,
@@ -619,9 +748,15 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
-				<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+				<PieChart
+					width={CHART_WIDTH}
+					height={CHART_HEIGHT}
+					title="Job and Class Level Aggregate"
+				>
+					{makeChartTitle('Job/Class Level Aggregate')}
 					<Pie
 						data={jobs.map(({ label, index, color }) => ({
 							name: label,
@@ -638,6 +773,7 @@ function App() {
 						label={getLabel}
 						labelLine={false}
 						animationDuration={ANIMATION_DURATION}
+						stroke="none"
 					/>
 				</PieChart>
 			</div>
@@ -657,6 +793,20 @@ function App() {
 						</li>
 					</ul>
 				</li>
+				<li>
+					The most popular guardian across all members of the FC is{' '}
+					<b>{mostPopularGuardian}</b>.
+					<ul>
+						<li>
+							The most popular guardian among <b>male</b> characters is{' '}
+							<b>{mostPopularMaleGuardian}</b>.
+						</li>
+						<li>
+							The most popular guardian among <b>female</b> characters is{' '}
+							<b>{mostPopularFemaleGuardian}</b>.
+						</li>
+					</ul>
+				</li>
 				{missingClans && (
 					<li>
 						Missing! The FC currently has no representation from the{' '}
@@ -673,7 +823,7 @@ function App() {
 				)}
 			</ul>
 			<aside>
-				<p>Last updated December 10, 2024.</p>
+				<p>Last updated December 26, 2024.</p>
 			</aside>
 		</>
 	);
