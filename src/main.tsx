@@ -823,7 +823,7 @@ function App() {
 				)}
 			</ul>
 			<aside>
-				<p>Last updated December 26, 2024.</p>
+				<p>Last updated February 8, 2025.</p>
 			</aside>
 		</>
 	);
