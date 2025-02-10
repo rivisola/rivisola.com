@@ -1,24 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Merienda&family=Satisfy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Imperial+Script&display=swap');
 
 body {
-	background: #ffdddd;
-	color: #440066;
+	background: #fbe9e7;
+	color: #bf360c;
 }
 
 h1 {
-	font-family: 'Satisfy', cursive;
-	font-size: 24pt;
+	font-family: 'Imperial Script', cursive;
+	font-size: 36pt;
 }
 
 h2 {
-	font-family: 'Satisfy', cursive;
-	font-size: 20pt;
+	font-family: 'Imperial Script', cursive;
+	font-size: 28pt;
 }
 
 p,
-li {
-	font-family: 'Merienda', cursive;
+li,
+label {
+	font-family: 'Charm', sans-serif;
 	font-size: 18pt;
+}
+
+button {
+	background: #ff5722;
+	border: solid 2px white;
+	border-radius: 0.5em;
+	color: white;
+	cursor: pointer;
+	font-family: 'Charm', sans-serif;
+	font-size: 18pt;
+	padding: 0 1em;
+
+	&:hover {
+		background: #e64a19;
+	}
+
+	&:active {
+		background: #bf360c;
+	}
+}
+
+select {
+	font-family: 'Charm', sans-serif;
+	font-size: 14pt;
 }
 
 .charts {
@@ -47,5 +72,5 @@ li {
 }
 
 aside p {
-	font-size: 12pt;
+	font-size: 14pt;
 }

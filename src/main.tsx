@@ -161,7 +161,7 @@ function getLabel({
 				dy={-14}
 				fill="#444"
 				fontFamily="Arial, Helvetica, sans-serif"
-				fontSize={20}
+				fontSize={18}
 				textAnchor="middle"
 			>
 				{name}
@@ -579,7 +579,7 @@ function App() {
 						})
 					}
 				>
-					Reset
+					Reset Filter
 				</button>
 			</div>
 			<h2>Charts</h2>
