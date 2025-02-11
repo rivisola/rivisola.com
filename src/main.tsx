@@ -780,7 +780,7 @@ function App() {
 				</div>
 			</div>
 			<h2>Insights</h2>
-			<ul className="insights">
+			<ul>
 				<li>
 					The most popular race across all members of the FC is{' '}
 					<b>{mostPopularRace}</b>.

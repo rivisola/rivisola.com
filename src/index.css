@@ -23,12 +23,8 @@ h3 {
 	font-size: 20pt;
 }
 
-li {
-	font-family: Helvetica, Arial, sans-serif;
-}
-
 p,
-.insights li,
+li,
 label {
 	font-family: 'Charm', sans-serif;
 	font-size: 18pt;
@@ -90,5 +86,6 @@ aside p {
 .custom-tooltip {
 	background: white;
 	border: 1px solid darkorange;
+	font-family: Helvetica, Arial, sans-serif;
 	padding: 0.25em;
 }
