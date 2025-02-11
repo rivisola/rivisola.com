@@ -2,7 +2,7 @@ import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import allData from './data.json' with { type: 'json' };
-import { Pie, PieChart } from 'recharts';
+import { Pie, PieChart, Tooltip } from 'recharts';
 
 const genders = [
 	{ label: 'Male (♂)', code: '♂', color: 'rgb(96 165 250)' },
@@ -606,6 +606,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -629,6 +630,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -652,6 +654,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -675,6 +678,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -699,6 +703,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -723,6 +728,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -750,6 +756,7 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 				<PieChart
 					width={CHART_WIDTH}
@@ -775,10 +782,11 @@ function App() {
 						animationDuration={ANIMATION_DURATION}
 						stroke="none"
 					/>
+					<Tooltip />
 				</PieChart>
 			</div>
 			<h2>Insights</h2>
-			<ul>
+			<ul className="insights">
 				<li>
 					The most popular race across all members of the FC is{' '}
 					<b>{mostPopularRace}</b>.

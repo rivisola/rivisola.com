@@ -15,8 +15,12 @@ h2 {
 	font-size: 28pt;
 }
 
+li {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
 p,
-li,
+.insights li,
 label {
 	font-family: 'Charm', sans-serif;
 	font-size: 18pt;
