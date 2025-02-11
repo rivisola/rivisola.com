@@ -181,22 +181,6 @@ function getLabel({
 	);
 }
 
-function makeChartTitle(title: string) {
-	return (
-		<text
-			x="50%"
-			y="10"
-			fontFamily="Arial, Helvetica, sans-serif"
-			fontSize="20"
-			fill="black"
-			textAnchor="middle"
-			dominantBaseline="central"
-		>
-			{title}
-		</text>
-	);
-}
-
 function filterData(selectedFilter: {
 	gender: string;
 	race: string;
@@ -364,6 +348,32 @@ function App() {
 	});
 
 	const data = filterData(selectedFilter);
+
+	const CustomTooltip = ({
+		payload,
+	}: {
+		payload?: {
+			name?: string;
+			value?: number;
+			payload?: {
+				gender?: string;
+				race?: string;
+				clan?: string;
+				guardian?: string;
+				startingCity?: string;
+				grandCompany?: string;
+				role?: string;
+			};
+			dataKey?: string;
+		}[];
+	}) => {
+		return (
+			<div className="custom-tooltip">
+				<b>{payload?.[0]?.name}</b> - {payload?.[0]?.value} (
+				{(((payload?.[0]?.value ?? 0) / data.length) * 100).toFixed(0)}%)
+			</div>
+		);
+	};
 
 	return (
 		<>
@@ -584,206 +594,190 @@ function App() {
 			</div>
 			<h2>Charts</h2>
 			<div className="charts">
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Gender Distribution"
-				>
-					{makeChartTitle('Gender Distribution')}
-					<Pie
-						data={genders.map(({ label, code, color }) => ({
-							name: label,
-							value: data.filter((d) => d.gender === code).length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Race Distribution"
-				>
-					{makeChartTitle('Race Distribution')}
-					<Pie
-						data={races.map(({ label, color }) => ({
-							name: label,
-							value: data.filter((d) => d.race === label).length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Clan Distribution"
-				>
-					{makeChartTitle('Clan Distribution')}
-					<Pie
-						data={clans.map(({ label, color }) => ({
-							name: label,
-							value: data.filter(({ clan }) => clan === label).length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Guardian Distribution"
-				>
-					{makeChartTitle('Guardian Distribution')}
-					<Pie
-						data={guardians.map(({ label, short, color }) => ({
-							name: short,
-							value: data.filter(({ guardian }) => guardian === label).length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Starting City Distribution"
-				>
-					{makeChartTitle('Starting City Distribution')}
-					<Pie
-						data={startingCities.map(({ label, color }) => ({
-							name: label,
-							value: data.filter(({ startingCity }) => startingCity === label)
-								.length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Grand Company Distribution"
-				>
-					{makeChartTitle('Grand Company Distribution')}
-					<Pie
-						data={grandCompanies.map(({ label, color }) => ({
-							name: label,
-							value: data.filter(({ grandCompany }) => grandCompany === label)
-								.length,
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Job and Class Level Aggregate by Role"
-				>
-					{makeChartTitle('Job/Class Level Aggregate by Role')}
-					<Pie
-						data={roles.map(({ label, startIndex, endIndex, color }) => ({
-							name: label,
-							value: data
-								.map(({ levels }) =>
-									levels.slice(startIndex, endIndex).reduce((a, b) => a + b),
-								)
-								.reduce((a, b) => a + b),
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
-				<PieChart
-					width={CHART_WIDTH}
-					height={CHART_HEIGHT}
-					title="Job and Class Level Aggregate"
-				>
-					{makeChartTitle('Job/Class Level Aggregate')}
-					<Pie
-						data={jobs.map(({ label, index, color }) => ({
-							name: label,
-							value: data
-								.map(({ levels }) => levels[index])
-								.reduce((a, b) => a + b),
-							fill: color,
-						}))}
-						dataKey="value"
-						nameKey="name"
-						cx="50%"
-						cy="50%"
-						outerRadius={OUTER_RADIUS}
-						label={getLabel}
-						labelLine={false}
-						animationDuration={ANIMATION_DURATION}
-						stroke="none"
-					/>
-					<Tooltip />
-				</PieChart>
+				<div>
+					<h3>Gender Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={genders.map(({ label, code, color }) => ({
+								name: label,
+								value: data.filter((d) => d.gender === code).length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Race Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={races.map(({ label, color }) => ({
+								name: label,
+								value: data.filter((d) => d.race === label).length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Clan Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={clans.map(({ label, color }) => ({
+								name: label,
+								value: data.filter(({ clan }) => clan === label).length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Guardian Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={guardians.map(({ label, short, color }) => ({
+								name: short,
+								value: data.filter(({ guardian }) => guardian === label).length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Starting City Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={startingCities.map(({ label, color }) => ({
+								name: label,
+								value: data.filter(({ startingCity }) => startingCity === label)
+									.length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Grand Company Distribution</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={grandCompanies.map(({ label, color }) => ({
+								name: label,
+								value: data.filter(({ grandCompany }) => grandCompany === label)
+									.length,
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Job and Class Level Aggregate by Role</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={roles.map(({ label, startIndex, endIndex, color }) => ({
+								name: label,
+								value: data
+									.map(({ levels }) =>
+										levels.slice(startIndex, endIndex).reduce((a, b) => a + b),
+									)
+									.reduce((a, b) => a + b),
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
+				<div>
+					<h3>Job and Class Level Aggregate</h3>
+					<PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+						<Pie
+							data={jobs.map(({ label, index, color }) => ({
+								name: label,
+								value: data
+									.map(({ levels }) => levels[index])
+									.reduce((a, b) => a + b),
+								fill: color,
+							}))}
+							dataKey="value"
+							nameKey="name"
+							cx="50%"
+							cy="50%"
+							outerRadius={OUTER_RADIUS}
+							label={getLabel}
+							labelLine={false}
+							animationDuration={ANIMATION_DURATION}
+							stroke="none"
+						/>
+						<Tooltip content={<CustomTooltip />} />
+					</PieChart>
+				</div>
 			</div>
 			<h2>Insights</h2>
 			<ul className="insights">

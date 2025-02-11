@@ -5,14 +5,22 @@ body {
 	color: #bf360c;
 }
 
-h1 {
+h1,
+h2,
+h3 {
 	font-family: 'Imperial Script', cursive;
+}
+
+h1 {
 	font-size: 36pt;
 }
 
 h2 {
-	font-family: 'Imperial Script', cursive;
 	font-size: 28pt;
+}
+
+h3 {
+	font-size: 20pt;
 }
 
 li {
@@ -77,4 +85,10 @@ select {
 
 aside p {
 	font-size: 14pt;
+}
+
+.custom-tooltip {
+	background: white;
+	border: 1px solid darkorange;
+	padding: 0.25em;
 }
