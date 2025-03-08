@@ -89,3 +89,55 @@ aside p {
 	font-family: Helvetica, Arial, sans-serif;
 	padding: 0.25em;
 }
+
+#data-sources {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+}
+
+#data-sources div {
+	float: left;
+	margin: 0 5px 0 0;
+	width: 200px;
+	height: 40px;
+	position: relative;
+}
+
+#data-sources div label,
+#data-sources div input {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#data-sources div input[type='radio'] {
+	cursor: pointer;
+	opacity: 0;
+	z-index: 2;
+}
+
+#data-sources div input[type='radio']:hover + label {
+	background: #e64a19;
+	border-color: white;
+	color: white;
+}
+
+#data-sources div input[type='radio']:checked + label {
+	background: #ff5722;
+	border-color: white;
+	color: white;
+	border-radius: 4px;
+}
+
+#data-sources div label {
+	background: white;
+	border: 1px black solid;
+	cursor: pointer;
+	text-align: center;
+	z-index: 1;
+	line-height: 1.8em;
+}
