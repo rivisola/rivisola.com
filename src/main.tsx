@@ -435,7 +435,7 @@ function App() {
 						checked={useNewData}
 						onChange={(e) => setUseNewData(e.target.value === 'newData')}
 					/>
-					<label htmlFor="huey">March 2025</label>
+					<label htmlFor="newData">March 2025</label>
 				</div>
 				<div>
 					<input

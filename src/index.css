@@ -116,8 +116,8 @@ aside p {
 
 #data-sources div input[type='radio'] {
 	cursor: pointer;
-	opacity: 0.01;
-	z-index: 3;
+	opacity: 0;
+	z-index: 2;
 }
 
 #data-sources div input[type='radio']:hover + label {
