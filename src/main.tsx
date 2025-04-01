@@ -365,6 +365,17 @@ function getEndangeredSpecies(useNewData: boolean) {
 		.map(({ label }) => label)
 		.join(' & ');
 }
+function getExtinctSpecies(useNewData: boolean) {
+	return races
+		.filter(
+			({ label }) =>
+				(useNewData ? allNewData : allOldData).filter(
+					({ race }) => race === label,
+				).length === 0,
+		)
+		.map(({ label }) => label)
+		.join(' or ');
+}
 
 function App() {
 	const [selectedFilter, setSelectedFilter] = useState({
@@ -412,7 +423,7 @@ function App() {
 			<p>
 				There {useNewData ? 'are ' : 'were '}
 				{(useNewData ? allNewData : allOldData).length} members in the Free
-				Company as of {useNewData ? 'March 7, 2025' : 'February 10, 2025'}.
+				Company as of {useNewData ? 'April 1, 2025' : 'March 7, 2025'}.
 			</p>
 			<p>
 				{data.length === (useNewData ? allNewData : allOldData).length ? (
@@ -435,7 +446,7 @@ function App() {
 						checked={useNewData}
 						onChange={(e) => setUseNewData(e.target.value === 'newData')}
 					/>
-					<label htmlFor="newData">March 2025</label>
+					<label htmlFor="newData">April 2025</label>
 				</div>
 				<div>
 					<input
@@ -446,7 +457,7 @@ function App() {
 						checked={!useNewData}
 						onChange={(e) => setUseNewData(e.target.value === 'newData')}
 					/>
-					<label htmlFor="oldData">February 2025</label>
+					<label htmlFor="oldData">March 2025</label>
 				</div>
 			</div>
 			<h2>Filters</h2>
@@ -893,6 +904,12 @@ function App() {
 							? 'each of the '
 							: ''}
 						<b>{getEndangeredSpecies(useNewData)}</b> remaining.
+					</li>
+				)}
+				{getExtinctSpecies(useNewData) && (
+					<li>
+						Extinct species? The FC {useNewData ? 'does' : 'did'} not have any{' '}
+						<b>{getExtinctSpecies(useNewData)}</b> among its members.
 					</li>
 				)}
 			</ul>
