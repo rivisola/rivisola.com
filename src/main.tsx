@@ -10,6 +10,17 @@ import data250526 from './data-250526.json' with { type: 'json' };
 import data250614 from './data-250614.json' with { type: 'json' };
 import { Pie, PieChart, Tooltip } from 'recharts';
 
+type DataSource =
+	| '241210'
+	| '241226'
+	| '250210'
+	| '250307'
+	| '250401'
+	| '250526'
+	| '250614';
+
+const latestDataSource: DataSource = '250614';
+
 const genders = [
 	{ label: 'Male (♂)', code: '♂', color: 'rgb(96 165 250)' },
 	{ label: 'Female (♀)', code: '♀', color: 'rgb(244 114 182)' },
@@ -197,9 +208,9 @@ function filterData(
 		grandCompany: string;
 		role: string;
 	},
-	useNewData: string,
+	dataSource: DataSource,
 ) {
-	return getAllDataForMonth(useNewData)
+	return getAllDataForMonth(dataSource)
 		.filter(
 			(data) =>
 				(!selectedFilter.gender || data.gender === selectedFilter.gender) &&
@@ -249,26 +260,26 @@ function getMostPopularRace(
 		grandCompany: string;
 		levels: number[];
 	}) => boolean = () => true,
-	useNewData: string,
+	dataSource: DataSource,
 ) {
-	function getRaceStats(useNewData: string) {
+	function getRaceStats(dataSource: DataSource) {
 		return races.map(({ label }) => ({
 			race: label,
-			count: getAllDataForMonth(useNewData)
+			count: getAllDataForMonth(dataSource)
 				.filter(({ race }) => race === label)
 				.filter(additionalFilter).length,
 		}));
 	}
-	function getTotalCount(useNewData: string) {
-		return getRaceStats(useNewData)
+	function getTotalCount(dataSource: DataSource) {
+		return getRaceStats(dataSource)
 			.map((x) => x.count)
 			.reduce((a, b) => a + b);
 	}
 	const maxValue = Math.max.apply(
 		null,
-		getRaceStats(useNewData).map(({ count }) => count),
+		getRaceStats(dataSource).map(({ count }) => count),
 	);
-	const mostPopularRaces = getRaceStats(useNewData).filter(
+	const mostPopularRaces = getRaceStats(dataSource).filter(
 		({ count }) => count === maxValue,
 	);
 
@@ -282,10 +293,10 @@ function getMostPopularRace(
 	if (mostPopularRaces.length === 1)
 		return convertToReadableFormat(
 			mostPopularRaces[0],
-			getTotalCount(useNewData),
+			getTotalCount(dataSource),
 		);
 
-	return `a tie between ${mostPopularRaces.map((race) => convertToReadableFormat(race, getTotalCount(useNewData))).join(' & ')}`;
+	return `a tie between ${mostPopularRaces.map((race) => convertToReadableFormat(race, getTotalCount(dataSource))).join(' & ')}`;
 }
 
 function getMostPopularGuardian(
@@ -306,11 +317,11 @@ function getMostPopularGuardian(
 		grandCompany: string;
 		levels: number[];
 	}) => boolean = () => true,
-	useNewData: string,
+	dataSource: DataSource,
 ) {
 	const guardianStats = guardians.map(({ label }) => ({
 		guardian: label,
-		count: getAllDataForMonth(useNewData)
+		count: getAllDataForMonth(dataSource)
 			.filter(({ guardian }) => guardian === label)
 			.filter(additionalFilter).length,
 	}));
@@ -336,52 +347,52 @@ function getMostPopularGuardian(
 	return `a tie between ${mostPopularGuardians.map((race) => convertToReadableFormat(race, totalCount)).join(' & ')}`;
 }
 
-function getMostPopularMaleRace(useNewData: string) {
-	return getMostPopularRace(({ gender }) => gender === '♂', useNewData);
+function getMostPopularMaleRace(dataSource: DataSource) {
+	return getMostPopularRace(({ gender }) => gender === '♂', dataSource);
 }
-function getMostPopularFemaleRace(useNewData: string) {
-	return getMostPopularRace(({ gender }) => gender === '♀', useNewData);
+function getMostPopularFemaleRace(dataSource: DataSource) {
+	return getMostPopularRace(({ gender }) => gender === '♀', dataSource);
 }
-function getMostPopularMaleGuardian(useNewData: string) {
-	return getMostPopularGuardian(({ gender }) => gender === '♂', useNewData);
+function getMostPopularMaleGuardian(dataSource: DataSource) {
+	return getMostPopularGuardian(({ gender }) => gender === '♂', dataSource);
 }
-function getMostPopularFemaleGuardian(useNewData: string) {
-	return getMostPopularGuardian(({ gender }) => gender === '♀', useNewData);
+function getMostPopularFemaleGuardian(dataSource: DataSource) {
+	return getMostPopularGuardian(({ gender }) => gender === '♀', dataSource);
 }
-function getMissingClans(useNewData: string) {
+function getMissingClans(dataSource: DataSource) {
 	return clans
 		.filter(
 			({ label }) =>
-				!getAllDataForMonth(useNewData)
+				!getAllDataForMonth(dataSource)
 					.map(({ clan }) => clan)
 					.includes(label),
 		)
 		.map(({ label }) => label)
 		.join(' & ');
 }
-function getEndangeredSpecies(useNewData: string) {
+function getEndangeredSpecies(dataSource: DataSource) {
 	return races
 		.filter(
 			({ label }) =>
-				getAllDataForMonth(useNewData).filter(({ race }) => race === label)
+				getAllDataForMonth(dataSource).filter(({ race }) => race === label)
 					.length === 1,
 		)
 		.map(({ label }) => label)
 		.join(' & ');
 }
-function getExtinctSpecies(useNewData: string) {
+function getExtinctSpecies(dataSource: DataSource) {
 	return races
 		.filter(
 			({ label }) =>
-				getAllDataForMonth(useNewData).filter(({ race }) => race === label)
+				getAllDataForMonth(dataSource).filter(({ race }) => race === label)
 					.length === 0,
 		)
 		.map(({ label }) => label)
 		.join(' or ');
 }
 
-function getAllDataForMonth(useNewData: string) {
-	switch (useNewData) {
+function getAllDataForMonth(dataSource: DataSource) {
+	switch (dataSource) {
 		case '241210':
 			return data241210;
 		case '241226':
@@ -410,9 +421,25 @@ function App() {
 		grandCompany: '',
 		role: '',
 	});
-	const [useNewData, setUseNewData] = useState('250526');
+	const [dataSource, setDataSource] = useState<DataSource>('250614');
 
-	const data = filterData(selectedFilter, useNewData);
+	const data = filterData(selectedFilter, dataSource);
+
+	function renderMonthButton(buttonData: DataSource, label: string) {
+		return (
+			<div>
+				<input
+					type="radio"
+					id={buttonData}
+					name="dataSourceRadios"
+					value={buttonData}
+					checked={dataSource === buttonData}
+					onChange={() => setDataSource(buttonData)}
+				/>
+				<label htmlFor={buttonData}>{label}</label>
+			</div>
+		);
+	}
 
 	const CustomTooltip = ({
 		payload,
@@ -440,110 +467,48 @@ function App() {
 		);
 	};
 
+	const viewingLatestDataSource = dataSource === latestDataSource;
 	return (
 		<>
 			<h1>Dawn's Respite Census</h1>
 			<nav>
 				<p>
-					There {useNewData ? 'are ' : 'were '}
-					{getAllDataForMonth(useNewData).length} members in the Free Company as
+					There {viewingLatestDataSource ? 'are ' : 'were '}
+					{getAllDataForMonth(dataSource).length} members in the Free Company as
 					of{' '}
 					{new Date(
-						`20${useNewData.slice(0, 2)}-${useNewData.slice(2, 4)}-${useNewData.slice(4)}`,
+						`20${dataSource.slice(0, 2)}-${dataSource.slice(2, 4)}-${dataSource.slice(4)}`,
 					).toLocaleDateString(undefined, {
 						year: 'numeric',
 						month: 'long',
 						day: 'numeric',
 					})}
 					.{' '}
-					{data.length === getAllDataForMonth(useNewData).length ? (
+					{data.length === getAllDataForMonth(dataSource).length ? (
 						<>Showing all results.</>
 					) : (
 						<>
-							{data.length} of {getAllDataForMonth(useNewData).length} members
+							{data.length} of {getAllDataForMonth(dataSource).length} members
 							match the current filter criteria.
 						</>
 					)}
 				</p>
 				<div id="data-sources">
 					<h2>Month</h2>
-					<div>
-						<input
-							type="radio"
-							id="250614"
-							name="dataSourceRadios"
-							value="250614"
-							checked={useNewData === '250614'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="250614">Jun 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="250526"
-							name="dataSourceRadios"
-							value="250526"
-							checked={useNewData === '250526'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="250526">May 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="250401"
-							name="dataSourceRadios"
-							value="250401"
-							checked={useNewData === '250401'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="250401">Apr 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="250307"
-							name="dataSourceRadios"
-							value="250307"
-							checked={useNewData === '250307'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="250307">Mar 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="250210"
-							name="dataSourceRadios"
-							value="250210"
-							checked={useNewData === '250210'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="250210">Feb 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="241226"
-							name="dataSourceRadios"
-							value="241226"
-							checked={useNewData === '241226'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="241226">Jan 2025</label>
-					</div>
-					<div>
-						<input
-							type="radio"
-							id="241210"
-							name="dataSourceRadios"
-							value="241210"
-							checked={useNewData === '241210'}
-							onChange={(e) => setUseNewData(e.target.value)}
-						/>
-						<label htmlFor="241210">Dec 2025</label>
-					</div>
+					{(
+						[
+							{ data: '250614', label: 'Jun 2025' },
+							{ data: '250526', label: 'May 2025' },
+							{ data: '250401', label: 'Apr 2025' },
+							{ data: '250307', label: 'Mar 2025' },
+							{ data: '250210', label: 'Feb 2025' },
+							{ data: '241226', label: 'Jan 2025' },
+							{ data: '241210', label: 'Dec 2024' },
+						] as {
+							data: DataSource;
+							label: string;
+						}[]
+					).map(({ data, label }) => renderMonthButton(data, label))}
 				</div>
 				<div id="filter-options">
 					<h2>Filters</h2>
@@ -564,7 +529,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, gender: '' },
-											useNewData,
+											dataSource,
 										).find(({ gender }) => gender === code)
 									}
 								>
@@ -590,7 +555,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, race: '' },
-											useNewData,
+											dataSource,
 										).find(({ race }) => race === label)
 									}
 								>
@@ -616,7 +581,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, clan: '' },
-											useNewData,
+											dataSource,
 										).find(({ clan }) => clan === label)
 									}
 								>
@@ -645,7 +610,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, guardian: '' },
-											useNewData,
+											dataSource,
 										).find(({ guardian }) => guardian === label)
 									}
 								>
@@ -674,7 +639,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, startingCity: '' },
-											useNewData,
+											dataSource,
 										).find(({ startingCity }) => startingCity === label)
 									}
 								>
@@ -703,7 +668,7 @@ function App() {
 									disabled={
 										!filterData(
 											{ ...selectedFilter, grandCompany: '' },
-											useNewData,
+											dataSource,
 										).find(({ grandCompany }) => grandCompany === label)
 									}
 								>
@@ -727,7 +692,7 @@ function App() {
 									key={label}
 									value={label}
 									disabled={
-										filterData({ ...selectedFilter, role: '' }, useNewData)
+										filterData({ ...selectedFilter, role: '' }, dataSource)
 											.map(({ levels }) =>
 												levels
 													.slice(startIndex, endIndex)
@@ -949,58 +914,61 @@ function App() {
 			<ul>
 				<li>
 					The most popular race across all members of the FC{' '}
-					{useNewData ? 'is' : 'was'}{' '}
-					<b>{getMostPopularRace(undefined, useNewData)}</b>.
+					{viewingLatestDataSource ? 'is' : 'was'}{' '}
+					<b>{getMostPopularRace(undefined, dataSource)}</b>.
 					<ul>
 						<li>
 							The most popular race among <b>male</b> characters{' '}
-							{useNewData ? 'is' : 'was'}{' '}
-							<b>{getMostPopularMaleRace(useNewData)}</b>.
+							{viewingLatestDataSource ? 'is' : 'was'}{' '}
+							<b>{getMostPopularMaleRace(dataSource)}</b>.
 						</li>
 						<li>
 							The most popular race among <b>female</b> characters{' '}
-							{useNewData ? 'is' : 'was'}{' '}
-							<b>{getMostPopularFemaleRace(useNewData)}</b>.
+							{viewingLatestDataSource ? 'is' : 'was'}{' '}
+							<b>{getMostPopularFemaleRace(dataSource)}</b>.
 						</li>
 					</ul>
 				</li>
 				<li>
 					The most popular guardian across all members of the FC{' '}
-					{useNewData ? 'is' : 'was'}{' '}
-					<b>{getMostPopularGuardian(undefined, useNewData)}</b>.
+					{viewingLatestDataSource ? 'is' : 'was'}{' '}
+					<b>{getMostPopularGuardian(undefined, dataSource)}</b>.
 					<ul>
 						<li>
 							The most popular guardian among <b>male</b> characters{' '}
-							{useNewData ? 'is' : 'was'}{' '}
-							<b>{getMostPopularMaleGuardian(useNewData)}</b>.
+							{viewingLatestDataSource ? 'is' : 'was'}{' '}
+							<b>{getMostPopularMaleGuardian(dataSource)}</b>.
 						</li>
 						<li>
 							The most popular guardian among <b>female</b> characters{' '}
-							{useNewData ? 'is' : 'was'}{' '}
-							<b>{getMostPopularFemaleGuardian(useNewData)}</b>.
+							{viewingLatestDataSource ? 'is' : 'was'}{' '}
+							<b>{getMostPopularFemaleGuardian(dataSource)}</b>.
 						</li>
 					</ul>
 				</li>
 				{getMissingClans && (
 					<li>
-						Missing! The FC {useNewData ? 'currently has' : 'previously had'} no
-						representation from the <b>{getMissingClans(useNewData)}</b>{' '}
-						{getMissingClans(useNewData).includes('&') ? 'clans' : 'clan'}.
+						Missing! The FC{' '}
+						{viewingLatestDataSource ? 'currently has' : 'previously had'} no
+						representation from the <b>{getMissingClans(dataSource)}</b>{' '}
+						{getMissingClans(dataSource).includes('&') ? 'clans' : 'clan'}.
 					</li>
 				)}
-				{getEndangeredSpecies(useNewData) && (
+				{getEndangeredSpecies(dataSource) && (
 					<li>
-						Endangered species? The FC only {useNewData ? 'has' : 'had'} one{' '}
-						{getEndangeredSpecies(useNewData).includes('&')
+						Endangered species? The FC only{' '}
+						{viewingLatestDataSource ? 'has' : 'had'} one{' '}
+						{getEndangeredSpecies(dataSource).includes('&')
 							? 'each of the '
 							: ''}
-						<b>{getEndangeredSpecies(useNewData)}</b> remaining.
+						<b>{getEndangeredSpecies(dataSource)}</b> remaining.
 					</li>
 				)}
-				{getExtinctSpecies(useNewData) && (
+				{getExtinctSpecies(dataSource) && (
 					<li>
-						Extinct species? The FC {useNewData ? 'does' : 'did'} not have any{' '}
-						<b>{getExtinctSpecies(useNewData)}</b> among its members.
+						Extinct species? The FC {viewingLatestDataSource ? 'does' : 'did'}{' '}
+						not have any <b>{getExtinctSpecies(dataSource)}</b> among its
+						members.
 					</li>
 				)}
 			</ul>
