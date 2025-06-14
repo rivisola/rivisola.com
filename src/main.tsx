@@ -482,6 +482,7 @@ function App() {
 						year: 'numeric',
 						month: 'long',
 						day: 'numeric',
+						timeZone: 'UTC',
 					})}
 					.{' '}
 					{data.length === getAllDataForMonth(dataSource).length ? (
