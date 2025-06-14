@@ -423,7 +423,7 @@ function App() {
 			<p>
 				There {useNewData ? 'are ' : 'were '}
 				{(useNewData ? allNewData : allOldData).length} members in the Free
-				Company as of {useNewData ? 'May 26, 2025' : 'April 1, 2025'}.
+				Company as of {useNewData ? 'June 14, 2025' : 'May 26, 2025'}.
 			</p>
 			<p>
 				{data.length === (useNewData ? allNewData : allOldData).length ? (
@@ -446,7 +446,7 @@ function App() {
 						checked={useNewData}
 						onChange={(e) => setUseNewData(e.target.value === 'newData')}
 					/>
-					<label htmlFor="newData">May 2025</label>
+					<label htmlFor="newData">June 2025</label>
 				</div>
 				<div>
 					<input
@@ -457,7 +457,7 @@ function App() {
 						checked={!useNewData}
 						onChange={(e) => setUseNewData(e.target.value === 'newData')}
 					/>
-					<label htmlFor="oldData">April 2025</label>
+					<label htmlFor="oldData">May 2025</label>
 				</div>
 			</div>
 			<h2>Filters</h2>
