@@ -1,8 +1,13 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import allOldData from './data-old.json' with { type: 'json' };
-import allNewData from './data-new.json' with { type: 'json' };
+import data241210 from './data-241210.json' with { type: 'json' };
+import data241226 from './data-241226.json' with { type: 'json' };
+import data250210 from './data-250210.json' with { type: 'json' };
+import data250307 from './data-250307.json' with { type: 'json' };
+import data250401 from './data-250401.json' with { type: 'json' };
+import data250526 from './data-250526.json' with { type: 'json' };
+import data250614 from './data-250614.json' with { type: 'json' };
 import { Pie, PieChart, Tooltip } from 'recharts';
 
 const genders = [
@@ -192,9 +197,9 @@ function filterData(
 		grandCompany: string;
 		role: string;
 	},
-	useNewData: boolean,
+	useNewData: string,
 ) {
-	return (useNewData ? allNewData : allOldData)
+	return getAllDataForMonth(useNewData)
 		.filter(
 			(data) =>
 				(!selectedFilter.gender || data.gender === selectedFilter.gender) &&
@@ -244,17 +249,17 @@ function getMostPopularRace(
 		grandCompany: string;
 		levels: number[];
 	}) => boolean = () => true,
-	useNewData: boolean,
+	useNewData: string,
 ) {
-	function getRaceStats(useNewData: boolean) {
+	function getRaceStats(useNewData: string) {
 		return races.map(({ label }) => ({
 			race: label,
-			count: (useNewData ? allNewData : allOldData)
+			count: getAllDataForMonth(useNewData)
 				.filter(({ race }) => race === label)
 				.filter(additionalFilter).length,
 		}));
 	}
-	function getTotalCount(useNewData: boolean) {
+	function getTotalCount(useNewData: string) {
 		return getRaceStats(useNewData)
 			.map((x) => x.count)
 			.reduce((a, b) => a + b);
@@ -301,11 +306,11 @@ function getMostPopularGuardian(
 		grandCompany: string;
 		levels: number[];
 	}) => boolean = () => true,
-	useNewData: boolean,
+	useNewData: string,
 ) {
 	const guardianStats = guardians.map(({ label }) => ({
 		guardian: label,
-		count: (useNewData ? allNewData : allOldData)
+		count: getAllDataForMonth(useNewData)
 			.filter(({ guardian }) => guardian === label)
 			.filter(additionalFilter).length,
 	}));
@@ -331,50 +336,68 @@ function getMostPopularGuardian(
 	return `a tie between ${mostPopularGuardians.map((race) => convertToReadableFormat(race, totalCount)).join(' & ')}`;
 }
 
-function getMostPopularMaleRace(useNewData: boolean) {
+function getMostPopularMaleRace(useNewData: string) {
 	return getMostPopularRace(({ gender }) => gender === '♂', useNewData);
 }
-function getMostPopularFemaleRace(useNewData: boolean) {
+function getMostPopularFemaleRace(useNewData: string) {
 	return getMostPopularRace(({ gender }) => gender === '♀', useNewData);
 }
-function getMostPopularMaleGuardian(useNewData: boolean) {
+function getMostPopularMaleGuardian(useNewData: string) {
 	return getMostPopularGuardian(({ gender }) => gender === '♂', useNewData);
 }
-function getMostPopularFemaleGuardian(useNewData: boolean) {
+function getMostPopularFemaleGuardian(useNewData: string) {
 	return getMostPopularGuardian(({ gender }) => gender === '♀', useNewData);
 }
-function getMissingClans(useNewData: boolean) {
+function getMissingClans(useNewData: string) {
 	return clans
 		.filter(
 			({ label }) =>
-				!(useNewData ? allNewData : allOldData)
+				!getAllDataForMonth(useNewData)
 					.map(({ clan }) => clan)
 					.includes(label),
 		)
 		.map(({ label }) => label)
 		.join(' & ');
 }
-function getEndangeredSpecies(useNewData: boolean) {
+function getEndangeredSpecies(useNewData: string) {
 	return races
 		.filter(
 			({ label }) =>
-				(useNewData ? allNewData : allOldData).filter(
-					({ race }) => race === label,
-				).length === 1,
+				getAllDataForMonth(useNewData).filter(({ race }) => race === label)
+					.length === 1,
 		)
 		.map(({ label }) => label)
 		.join(' & ');
 }
-function getExtinctSpecies(useNewData: boolean) {
+function getExtinctSpecies(useNewData: string) {
 	return races
 		.filter(
 			({ label }) =>
-				(useNewData ? allNewData : allOldData).filter(
-					({ race }) => race === label,
-				).length === 0,
+				getAllDataForMonth(useNewData).filter(({ race }) => race === label)
+					.length === 0,
 		)
 		.map(({ label }) => label)
 		.join(' or ');
+}
+
+function getAllDataForMonth(useNewData: string) {
+	switch (useNewData) {
+		case '241210':
+			return data241210;
+		case '241226':
+			return data241226;
+		case '250210':
+			return data250210;
+		case '250307':
+			return data250307;
+		case '250401':
+			return data250401;
+		case '250526':
+			return data250526;
+		case '250614':
+		default:
+			return data250614;
+	}
 }
 
 function App() {
@@ -387,7 +410,7 @@ function App() {
 		grandCompany: '',
 		role: '',
 	});
-	const [useNewData, setUseNewData] = useState(true);
+	const [useNewData, setUseNewData] = useState('250526');
 
 	const data = filterData(selectedFilter, useNewData);
 
@@ -420,253 +443,321 @@ function App() {
 	return (
 		<>
 			<h1>Dawn's Respite Census</h1>
-			<p>
-				There {useNewData ? 'are ' : 'were '}
-				{(useNewData ? allNewData : allOldData).length} members in the Free
-				Company as of {useNewData ? 'June 14, 2025' : 'May 26, 2025'}.
-			</p>
-			<p>
-				{data.length === (useNewData ? allNewData : allOldData).length ? (
-					<>Showing all results.</>
-				) : (
-					<>
-						{data.length} of {(useNewData ? allNewData : allOldData).length}{' '}
-						members match the current filter criteria.
-					</>
-				)}
-			</p>
-			<h2>Compare to prior month</h2>
-			<div id="data-sources">
-				<div>
-					<input
-						type="radio"
-						id="newData"
-						name="dataSourceRadios"
-						value="newData"
-						checked={useNewData}
-						onChange={(e) => setUseNewData(e.target.value === 'newData')}
-					/>
-					<label htmlFor="newData">June 2025</label>
+			<nav>
+				<p>
+					There {useNewData ? 'are ' : 'were '}
+					{getAllDataForMonth(useNewData).length} members in the Free Company as
+					of{' '}
+					{new Date(
+						`20${useNewData.slice(0, 2)}-${useNewData.slice(2, 4)}-${useNewData.slice(4)}`,
+					).toLocaleDateString(undefined, {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})}
+					.{' '}
+					{data.length === getAllDataForMonth(useNewData).length ? (
+						<>Showing all results.</>
+					) : (
+						<>
+							{data.length} of {getAllDataForMonth(useNewData).length} members
+							match the current filter criteria.
+						</>
+					)}
+				</p>
+				<div id="data-sources">
+					<h2>Month</h2>
+					<div>
+						<input
+							type="radio"
+							id="250614"
+							name="dataSourceRadios"
+							value="250614"
+							checked={useNewData === '250614'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="250614">Jun 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="250526"
+							name="dataSourceRadios"
+							value="250526"
+							checked={useNewData === '250526'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="250526">May 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="250401"
+							name="dataSourceRadios"
+							value="250401"
+							checked={useNewData === '250401'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="250401">Apr 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="250307"
+							name="dataSourceRadios"
+							value="250307"
+							checked={useNewData === '250307'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="250307">Mar 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="250210"
+							name="dataSourceRadios"
+							value="250210"
+							checked={useNewData === '250210'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="250210">Feb 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="241226"
+							name="dataSourceRadios"
+							value="241226"
+							checked={useNewData === '241226'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="241226">Jan 2025</label>
+					</div>
+					<div>
+						<input
+							type="radio"
+							id="241210"
+							name="dataSourceRadios"
+							value="241210"
+							checked={useNewData === '241210'}
+							onChange={(e) => setUseNewData(e.target.value)}
+						/>
+						<label htmlFor="241210">Dec 2025</label>
+					</div>
 				</div>
-				<div>
-					<input
-						type="radio"
-						id="oldData"
-						name="dataSourceRadios"
-						value="oldData"
-						checked={!useNewData}
-						onChange={(e) => setUseNewData(e.target.value === 'newData')}
-					/>
-					<label htmlFor="oldData">May 2025</label>
-				</div>
-			</div>
-			<h2>Filters</h2>
-			<div id="filter-options">
-				<div>
-					<label htmlFor="gender-select">Gender</label>
-					<select
-						id="gender-select"
-						value={selectedFilter.gender}
-						onChange={(e) =>
-							setSelectedFilter({ ...selectedFilter, gender: e.target.value })
-						}
-					>
-						<option value="">All</option>
-						{genders.map(({ code, label }) => (
-							<option
-								key={code}
-								value={code}
-								disabled={
-									!filterData(
-										{ ...selectedFilter, gender: '' },
-										useNewData,
-									).find(({ gender }) => gender === code)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<label htmlFor="race-select">Race</label>
-					<select
-						id="race-select"
-						value={selectedFilter.race}
-						onChange={(e) =>
-							setSelectedFilter({ ...selectedFilter, race: e.target.value })
-						}
-					>
-						<option value="">All</option>
-						{races.map(({ label }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									!filterData({ ...selectedFilter, race: '' }, useNewData).find(
-										({ race }) => race === label,
-									)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<label htmlFor="clan-select">Clan</label>
-					<select
-						id="clan-select"
-						value={selectedFilter.clan}
-						onChange={(e) =>
-							setSelectedFilter({ ...selectedFilter, clan: e.target.value })
-						}
-					>
-						<option value="">All</option>
-						{clans.map(({ label }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									!filterData({ ...selectedFilter, clan: '' }, useNewData).find(
-										({ clan }) => clan === label,
-									)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<label htmlFor="guardian-select">Guardian</label>
-					<select
-						id="guardian-select"
-						value={selectedFilter.guardian}
-						onChange={(e) =>
-							setSelectedFilter({ ...selectedFilter, guardian: e.target.value })
-						}
-					>
-						<option value="">All</option>
-						{guardians.map(({ label }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									!filterData(
-										{ ...selectedFilter, guardian: '' },
-										useNewData,
-									).find(({ guardian }) => guardian === label)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<label htmlFor="startingCity-select">Starting City</label>
-					<select
-						id="startingCity-select"
-						value={selectedFilter.startingCity}
-						onChange={(e) =>
+				<div id="filter-options">
+					<h2>Filters</h2>
+					<div>
+						<label htmlFor="gender-select">Gender</label>
+						<select
+							id="gender-select"
+							value={selectedFilter.gender}
+							onChange={(e) =>
+								setSelectedFilter({ ...selectedFilter, gender: e.target.value })
+							}
+						>
+							<option value="">All</option>
+							{genders.map(({ code, label }) => (
+								<option
+									key={code}
+									value={code}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, gender: '' },
+											useNewData,
+										).find(({ gender }) => gender === code)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="race-select">Race</label>
+						<select
+							id="race-select"
+							value={selectedFilter.race}
+							onChange={(e) =>
+								setSelectedFilter({ ...selectedFilter, race: e.target.value })
+							}
+						>
+							<option value="">All</option>
+							{races.map(({ label }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, race: '' },
+											useNewData,
+										).find(({ race }) => race === label)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="clan-select">Clan</label>
+						<select
+							id="clan-select"
+							value={selectedFilter.clan}
+							onChange={(e) =>
+								setSelectedFilter({ ...selectedFilter, clan: e.target.value })
+							}
+						>
+							<option value="">All</option>
+							{clans.map(({ label }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, clan: '' },
+											useNewData,
+										).find(({ clan }) => clan === label)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="guardian-select">Guardian</label>
+						<select
+							id="guardian-select"
+							value={selectedFilter.guardian}
+							onChange={(e) =>
+								setSelectedFilter({
+									...selectedFilter,
+									guardian: e.target.value,
+								})
+							}
+						>
+							<option value="">All</option>
+							{guardians.map(({ label }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, guardian: '' },
+											useNewData,
+										).find(({ guardian }) => guardian === label)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="startingCity-select">Starting City</label>
+						<select
+							id="startingCity-select"
+							value={selectedFilter.startingCity}
+							onChange={(e) =>
+								setSelectedFilter({
+									...selectedFilter,
+									startingCity: e.target.value,
+								})
+							}
+						>
+							<option value="">All</option>
+							{startingCities.map(({ label }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, startingCity: '' },
+											useNewData,
+										).find(({ startingCity }) => startingCity === label)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="grandCompany-select">Grand Company</label>
+						<select
+							id="grandCompany-select"
+							value={selectedFilter.grandCompany}
+							onChange={(e) =>
+								setSelectedFilter({
+									...selectedFilter,
+									grandCompany: e.target.value,
+								})
+							}
+						>
+							<option value="">All</option>
+							{grandCompanies.map(({ label }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										!filterData(
+											{ ...selectedFilter, grandCompany: '' },
+											useNewData,
+										).find(({ grandCompany }) => grandCompany === label)
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label htmlFor="roles-select">Job/Class Role</label>
+						<select
+							id="roles-select"
+							value={selectedFilter.role}
+							onChange={(e) =>
+								setSelectedFilter({ ...selectedFilter, role: e.target.value })
+							}
+						>
+							<option value="">All</option>
+							{roles.map(({ label, startIndex, endIndex }) => (
+								<option
+									key={label}
+									value={label}
+									disabled={
+										filterData({ ...selectedFilter, role: '' }, useNewData)
+											.map(({ levels }) =>
+												levels
+													.slice(startIndex, endIndex)
+													.reduce((a, b) => a + b),
+											)
+											.reduce((a, b) => a + b) === 0
+									}
+								>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
+					<button
+						onClick={() =>
 							setSelectedFilter({
-								...selectedFilter,
-								startingCity: e.target.value,
+								gender: '',
+								race: '',
+								clan: '',
+								guardian: '',
+								startingCity: '',
+								grandCompany: '',
+								role: '',
 							})
 						}
 					>
-						<option value="">All</option>
-						{startingCities.map(({ label }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									!filterData(
-										{ ...selectedFilter, startingCity: '' },
-										useNewData,
-									).find(({ startingCity }) => startingCity === label)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
+						Reset Filter
+					</button>
 				</div>
-				<div>
-					<label htmlFor="grandCompany-select">Grand Company</label>
-					<select
-						id="grandCompany-select"
-						value={selectedFilter.grandCompany}
-						onChange={(e) =>
-							setSelectedFilter({
-								...selectedFilter,
-								grandCompany: e.target.value,
-							})
-						}
-					>
-						<option value="">All</option>
-						{grandCompanies.map(({ label }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									!filterData(
-										{ ...selectedFilter, grandCompany: '' },
-										useNewData,
-									).find(({ grandCompany }) => grandCompany === label)
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<label htmlFor="roles-select">Job/Class Role</label>
-					<select
-						id="roles-select"
-						value={selectedFilter.role}
-						onChange={(e) =>
-							setSelectedFilter({ ...selectedFilter, role: e.target.value })
-						}
-					>
-						<option value="">All</option>
-						{roles.map(({ label, startIndex, endIndex }) => (
-							<option
-								key={label}
-								value={label}
-								disabled={
-									filterData({ ...selectedFilter, role: '' }, useNewData)
-										.map(({ levels }) =>
-											levels
-												.slice(startIndex, endIndex)
-												.reduce((a, b) => a + b),
-										)
-										.reduce((a, b) => a + b) === 0
-								}
-							>
-								{label}
-							</option>
-						))}
-					</select>
-				</div>
-				<button
-					onClick={() =>
-						setSelectedFilter({
-							gender: '',
-							race: '',
-							clan: '',
-							guardian: '',
-							startingCity: '',
-							grandCompany: '',
-							role: '',
-						})
-					}
-				>
-					Reset Filter
-				</button>
-			</div>
+			</nav>
 			<h2>Charts</h2>
 			<div className="charts">
 				<div>

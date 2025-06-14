@@ -27,7 +27,7 @@ p,
 li,
 label {
 	font-family: 'Charm', sans-serif;
-	font-size: 18pt;
+	font-size: 16pt;
 }
 
 button {
@@ -37,7 +37,7 @@ button {
 	color: white;
 	cursor: pointer;
 	font-family: 'Charm', sans-serif;
-	font-size: 18pt;
+	font-size: 14pt;
 	padding: 0 1em;
 
 	&:hover {
@@ -51,7 +51,7 @@ button {
 
 select {
 	font-family: 'Charm', sans-serif;
-	font-size: 14pt;
+	font-size: 12pt;
 }
 
 .charts {
@@ -93,13 +93,15 @@ aside p {
 #data-sources {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 0.5em;
 }
 
 #data-sources div {
+	flex-shrink: 0;
 	float: left;
 	margin: 0 5px 0 0;
-	width: 200px;
+	width: 100px;
 	height: 40px;
 	position: relative;
 }
@@ -140,4 +142,27 @@ aside p {
 	text-align: center;
 	z-index: 1;
 	line-height: 1.8em;
+}
+
+nav {
+	position: sticky;
+	top: 0;
+	overflow: hidden;
+	background: #fbe9e7;
+	z-index: 3;
+	padding-bottom: 16px;
+	p {
+		margin: 0;
+	}
+	h2 {
+		margin: 0 32px 0 0;
+	}
+}
+
+@media (max-width: 700px) {
+	#filter-options,
+	#data-sources {
+		flex-wrap: nowrap;
+		overflow: scroll;
+	}
 }
