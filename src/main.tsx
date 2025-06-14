@@ -427,14 +427,27 @@ function App() {
 
 	function renderMonthButton(buttonData: DataSource, label: string) {
 		return (
-			<div>
+			<div key={buttonData}>
 				<input
 					type="radio"
 					id={buttonData}
 					name="dataSourceRadios"
 					value={buttonData}
 					checked={dataSource === buttonData}
-					onChange={() => setDataSource(buttonData)}
+					onChange={() => {
+						if (filterData(selectedFilter, buttonData).length === 0) {
+							setSelectedFilter({
+								gender: '',
+								race: '',
+								clan: '',
+								guardian: '',
+								startingCity: '',
+								grandCompany: '',
+								role: '',
+							});
+						}
+						setDataSource(buttonData);
+					}}
 				/>
 				<label htmlFor={buttonData}>{label}</label>
 			</div>
